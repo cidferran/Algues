@@ -22,7 +22,9 @@ for filename in os.listdir(folder):
 tracker = cv2.legacy.TrackerCSRT_create()
 
 # Read video
-ubi_video = "/home/cidferran/Documents/PEF2/ALGAS/Alexandrium+Parasito_30sec.mp4"  # Ferran
+# ubi_video = "/home/cidferran/Documents/PEF2/ALGAS/x10_Alexandrium minutum_1minfosc_clipped.mp4"  # Ferran
+ubi_video = "/home/cidferran/Documents/PEF2/ALGAS/Alexandrium+Parasito_10min.MP4"  # Ferran
+
 name_video = '\Alexandrium sano 6x.MP4'
 # ubi_video = r"C:\Users\gerir\OneDrive\Escriptori\Enginyeria_Física\3B\PEF2\pef2projecte\.venv" + name_video
 
@@ -91,8 +93,6 @@ while True:
     # Calculate Frames per second (FPS)
     fps = cv2.getTickFrequency() / (cv2.getTickCount() - timer)
 
-    
-
     #Time
     time +=1
     v_time = np.vstack([v_time,time])
@@ -125,6 +125,12 @@ while True:
         # Tracking failure
         cv2.putText(frame, "Tracking failure detected", (100,80), cv2.FONT_HERSHEY_SIMPLEX, 0.75,(0,0,255),2)
         failure = np.vstack([failure, time])
+        tracker.clear()
+        # ok, frame = video.read()
+        tracker = cv2.legacy.TrackerCSRT_create()
+
+        bbox = cv2.selectROI(frame, False)
+        ok = tracker.init(frame, bbox)
 
 
     # Display tracker type on frame
@@ -164,7 +170,6 @@ print(start)
 # results_folder = "C:\\Users\\gerir\\OneDrive\\Escriptori\\Enginyeria_Física\\3B\\PEF2\\pef2projecte\\.venv\\Results" # Gerard
 results_folder = "/home/cidferran/Documents/PEF2/ALGAS/results/" # Ferran
 
-## Delete folder contents prior to execution !!!
 for ii in range(len(start)):
     head = "Time, x, y, Vx, Vy, Speed"
     t = vec_time[start[ii]:finish[ii]]
